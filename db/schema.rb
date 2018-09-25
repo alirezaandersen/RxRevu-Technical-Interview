@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180409171356) do
+ActiveRecord::Schema.define(version: 20180925161201) do
 
   create_table "diseases", force: :cascade do |t|
     t.string "name"
@@ -25,6 +25,12 @@ ActiveRecord::Schema.define(version: 20180409171356) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "hospitals", force: :cascade do |t|
+    t.string "hospital_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "medications", force: :cascade do |t|
     t.integer "strength"
     t.string "strength_unit"
@@ -32,6 +38,28 @@ ActiveRecord::Schema.define(version: 20180409171356) do
     t.integer "drug_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "prescribers", force: :cascade do |t|
+    t.string "prescriber_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "prescriptions", id: false, force: :cascade do |t|
+    t.integer "id", limit: 11
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "frequency_per_day"
+    t.integer "days_supply"
+    t.integer "medication_id"
+    t.integer "prescriber_id"
+    t.integer "hospital_id"
+    t.integer "disease_id"
+    t.index ["disease_id"], name: "index_prescriptions_on_disease_id"
+    t.index ["hospital_id"], name: "index_prescriptions_on_hospital_id"
+    t.index ["medication_id"], name: "index_prescriptions_on_medication_id"
+    t.index ["prescriber_id"], name: "index_prescriptions_on_prescriber_id"
   end
 
 end
