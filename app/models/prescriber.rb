@@ -5,7 +5,7 @@ class Prescriber < ApplicationRecord
   def self.provider_effective_doses#(frequency = nil, days = nil)#passing in params wrong somehow from controller
     # frequency = 4 #frequency.to_i
     # days = 90 #days.to_i
-    pp_hash = Prescription.group('prescriber_id').where(frequency_per_day: 4, days_supply: 90).count
+    pp_hash = Prescription.group('prescriber_id').where(frequency_per_day: 4, days_supply: 90).count #values should not be hard coded in. current values based on data
     dr_hash = Hash.new()
     pp_hash.each  do |dr_id, num_of_prescripts|
       dr =  Prescriber.find(dr_id).prescriber_name
