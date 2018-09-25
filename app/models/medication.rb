@@ -2,11 +2,13 @@ class Medication < ApplicationRecord
   belongs_to :drug
   has_many :prescriptions
 
+  #returns hash with disease.id as key values [[medication_id, disease_id], number of times used to treat disease]]
   def self.most_med_per_disease
     most_per_disease = Prescription.group(:medication_id, :disease_id).count
     most_per_disease.group_by { |mh, v| p mh.last }
   end
 
+  #groups diseases as key and all drugs related to it. {(disease.id)96929=>{(drug.id)1312=>(number of times prescribed to treat drugs)105, 8715=>85, 5764=>196, 3360=>201, 3940=>140}
   def self.group_by_disease
     disease_hash = Hash.new(0)
     self.most_med_per_disease.each do |dis, arr |
@@ -21,7 +23,7 @@ class Medication < ApplicationRecord
     end
      disease_hash
   end
-
+  #{"Disease: disease name "=>"Drug: drug name"}
   def self.most_common_medication_ordered_to_treat_each_disease
     hospital_drugs = Hash.new()
     self.group_by_disease.each do |hos_id, med_hash|

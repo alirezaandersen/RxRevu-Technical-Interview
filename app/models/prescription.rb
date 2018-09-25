@@ -11,6 +11,7 @@ class Prescription < ApplicationRecord
     self.group(:hospital_id, :medication_id).count
   end
 
+  #returns {"Drug: drug.name"=> "Number of times prescribed: integer value (total times drug has been prescribed)"}
   def self.drugs_prescribed_number_of_times
     num_of_ind_med = self.group(:medication_id).count
     common_drug = Hash.new(0)
@@ -29,13 +30,14 @@ class Prescription < ApplicationRecord
     end
     hash
   end
-
+  #returns has of hospital_id as key. values are [medication_id, hospital_id] => number of times med was prescripted per hospital
   def self.most_med_per_hospital
     most_per_hospital = self.group(:medication_id, :hospital_id).count
     most_per_hospital.group_by { |mh, v| p mh.last }
   end
 
-  def self.group_by_hospital
+  #groups_drugs_by_hospital_and_quantities (hospital.id)63=>{(drug.id)1312=>(number of times prescribed)279, 8715=>267, 5764=>552, 3360=>581, 3940=>416
+  def self.group_drug_by_hospital
     # hash_of_hospitals_drugs_counts
     hospital_hash = Hash.new(0)
     self.most_med_per_hospital.each do |hos, arr|

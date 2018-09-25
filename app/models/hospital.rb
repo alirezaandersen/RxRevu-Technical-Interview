@@ -16,7 +16,7 @@ class Hospital < ApplicationRecord
   #{Hospital name => drug name}
   def self.most_commonly_prescribed_drug_at_each_hospital
     hospital_drugs = Hash.new()
-    Prescription.group_by_hospital.each do |hos_id, drug_hash|
+    Prescription.group_drug_by_hospital.each do |hos_id, drug_hash|
       popular_drug = drug_hash.max_by { |k, v| v }
       drug = Drug.find(popular_drug[0]).name
       hospital = Hospital.find(hos_id).hospital_name
